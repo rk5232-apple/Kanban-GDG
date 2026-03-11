@@ -38,12 +38,10 @@ body.dark{
 
 body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background 0.3s,color 0.3s}
 
-/* Scrollbars */
 ::-webkit-scrollbar{width:5px;height:5px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
 
-/* Header */
 .header{
   position:sticky;top:0;z-index:200;
   background:var(--surface);
@@ -85,23 +83,13 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
   padding:9px 16px;transition:all 0.2s;
 }
 
-/* Colorful header buttons in light mode */
-.btn-theme{
-  background:linear-gradient(135deg,#eee9ff,#dbeafe);
-  color:#7c5cfc;border:1.5px solid #d4c8ff;
-}
+.btn-theme{background:linear-gradient(135deg,#eee9ff,#dbeafe);color:#7c5cfc;border:1.5px solid #d4c8ff;}
 .btn-theme:hover{background:linear-gradient(135deg,#ddd0ff,#c7dcff);transform:translateY(-1px);box-shadow:0 4px 12px rgba(124,92,252,0.2)}
 
-.btn-analytics{
-  background:linear-gradient(135deg,#fff3dc,#fce7f3);
-  color:#d97706;border:1.5px solid #fde8b0;
-}
+.btn-analytics{background:linear-gradient(135deg,#fff3dc,#fce7f3);color:#d97706;border:1.5px solid #fde8b0;}
 .btn-analytics:hover{background:linear-gradient(135deg,#ffe8b0,#fad4eb);transform:translateY(-1px);box-shadow:0 4px 12px rgba(255,159,67,0.2)}
 
-.btn-col{
-  background:linear-gradient(135deg,#d4f7e8,#dbeafe);
-  color:#059669;border:1.5px solid #a7f0cc;
-}
+.btn-col{background:linear-gradient(135deg,#d4f7e8,#dbeafe);color:#059669;border:1.5px solid #a7f0cc;}
 .btn-col:hover{background:linear-gradient(135deg,#b8f0d8,#c7dcff);transform:translateY(-1px);box-shadow:0 4px 12px rgba(38,208,124,0.2)}
 
 .btn-ghost{background:var(--surface2);color:var(--text2);border:1.5px solid var(--border)}
@@ -111,12 +99,10 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 22px rgba(124,92,252,0.42)}
 .btn-icon{padding:9px;width:38px;justify-content:center}
 
-/* Dark mode — tone down colorful btns */
 body.dark .btn-theme{background:rgba(124,92,252,0.15);color:#a78bfa;border-color:rgba(124,92,252,0.3)}
 body.dark .btn-analytics{background:rgba(255,159,67,0.15);color:#fbbf24;border-color:rgba(255,159,67,0.3)}
 body.dark .btn-col{background:rgba(38,208,124,0.15);color:#34d399;border-color:rgba(38,208,124,0.3)}
 
-/* Summary — compact slim row */
 .summary{display:flex;gap:10px;padding:14px 28px 0;overflow-x:auto}
 .summary::-webkit-scrollbar{display:none}
 
@@ -134,13 +120,11 @@ body.dark .btn-col{background:rgba(38,208,124,0.15);color:#34d399;border-color:r
 .stat-num{font-family:'Nunito',sans-serif;font-weight:900;font-size:20px;line-height:1}
 .stat-lbl{font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:0.4px;margin-top:2px}
 
-/* Analytics modal */
 .analytics-overlay{position:fixed;inset:0;background:rgba(15,17,30,0.55);backdrop-filter:blur(14px);z-index:1000;display:flex;align-items:center;justify-content:center;padding:24px;animation:fadeIn 0.2s ease}
 .analytics-modal{background:var(--surface);border:1.5px solid var(--border2);border-radius:24px;width:100%;max-width:540px;box-shadow:var(--sh3);animation:popIn 0.28s cubic-bezier(0.34,1.56,0.64,1)}
 .analytics-head{padding:22px 22px 16px;border-bottom:1.5px solid var(--border);display:flex;align-items:center;justify-content:space-between}
 .analytics-body{padding:24px}
 
-/* Progress section — now inside analytics modal only */
 .prog-card{transition:background 0.3s}
 .prog-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;gap:12px;flex-wrap:wrap}
 .prog-title{font-family:'Nunito',sans-serif;font-weight:800;font-size:15px}
@@ -155,17 +139,14 @@ body.dark .btn-col{background:rgba(38,208,124,0.15);color:#34d399;border-color:r
 .bar-fill{width:100%;border-radius:10px;transition:height 1s cubic-bezier(0.34,1.56,0.64,1)}
 .bar-lbl{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.3px;text-align:center}
 
-/* Analytics stat pills */
 .analytics-pills{display:flex;gap:10px;margin-bottom:22px;flex-wrap:wrap}
 .analytics-pill{flex:1;min-width:100px;background:var(--surface2);border:1.5px solid var(--border);border-radius:12px;padding:12px 14px;text-align:center}
 .ap-num{font-family:'Nunito',sans-serif;font-weight:900;font-size:22px;line-height:1;margin-bottom:3px}
 .ap-lbl{font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:0.4px}
 
-/* Board — give it max vertical height */
 .board{display:flex;gap:18px;padding:14px 28px 32px;overflow-x:auto;align-items:flex-start;min-height:calc(100vh - 140px)}
 .board::-webkit-scrollbar{height:6px}
 
-/* Column */
 .column{
   background:var(--surface);border:1.5px solid var(--border);
   border-radius:var(--r);width:300px;min-width:300px;
@@ -219,7 +200,6 @@ body.dark .btn-col{background:rgba(38,208,124,0.15);color:#34d399;border-color:r
   background:rgba(0,0,0,0.02);
 }
 
-/* Task Card */
 .task-card{
   background:var(--surface);border:1.5px solid var(--border);
   border-radius:var(--rsm);padding:13px;cursor:grab;
@@ -239,7 +219,6 @@ body.dark .btn-col{background:rgba(38,208,124,0.15);color:#34d399;border-color:r
 .task-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;gap:6px}
 .chip{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.4px;padding:3px 10px;border-radius:100px;flex-shrink:0}
 
-/* Fix 4: darker text for better contrast */
 .chip-high{background:#ffd6db;color:#c0162f}
 .chip-medium{background:#ffe8bc;color:#b85e00}
 .chip-low{background:#b8f0d6;color:#0e7a47}
@@ -255,13 +234,12 @@ body.dark .chip-low{background:rgba(38,208,124,0.18);color:#2ee89a}
 .tact-btn.del:hover{background:#ffe4e8;color:#f43f5e;border-color:rgba(244,63,94,0.2)}
 .tact-btn.move{background:var(--surface2)}
 
-.task-title{font-weight:700;font-size:14px;line-height:1.4;margin-bottom:5px;color:var(--text)}
+.task-title{font-weight:700;font-size:14px;line-height:1.4;margin-bottom:5px;color:var(--text);word-break:break-word}
 .task-desc{font-size:12px;color:var(--text2);line-height:1.55;margin-bottom:11px}
 .task-foot{display:flex;align-items:center;justify-content:space-between}
 .task-tag{background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:3px 9px;font-size:11px;font-weight:600;color:var(--text2)}
 .task-date{font-size:11px;color:var(--text3);font-weight:600;display:flex;align-items:center;gap:4px}
 
-/* Modal */
 .overlay{position:fixed;inset:0;background:rgba(15,17,30,0.5);backdrop-filter:blur(12px);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeIn 0.2s ease}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 .modal{background:var(--surface);border:1.5px solid var(--border2);border-radius:24px;width:100%;max-width:460px;box-shadow:var(--sh3);animation:popIn 0.28s cubic-bezier(0.34,1.56,0.64,1);overflow:hidden}
@@ -295,15 +273,13 @@ textarea.form-ctrl{resize:vertical;min-height:85px}
 .form-ctrl:focus{border-color:var(--purple);background:var(--surface);box-shadow:0 0 0 3px rgba(124,92,252,0.1)}
 select.form-ctrl option{background:var(--surface)}
 
-/* Context Menu */
-.ctx{position:fixed;background:var(--surface);border:1.5px solid var(--border2);border-radius:var(--rsm);padding:7px;min-width:168px;z-index:3000;box-shadow:var(--sh2);animation:fadeIn 0.15s ease}
+.ctx{position:absolute;top:40px;right:0;background:var(--surface);border:1.5px solid var(--border2);border-radius:var(--rsm);padding:7px;min-width:168px;z-index:3000;box-shadow:var(--sh2);animation:fadeIn 0.15s ease}
 .ctx-item{border-radius:9px;color:var(--text2);cursor:pointer;display:flex;align-items:center;gap:9px;font-size:13px;font-weight:600;padding:9px 12px;transition:all 0.12s}
 .ctx-item:hover{background:var(--surface2);color:var(--text)}
 .ctx-item.danger:hover{background:#ffe4e8;color:#f43f5e}
 body.dark .ctx-item.danger:hover{background:rgba(244,63,94,0.12)}
 .ctx-div{height:1px;background:var(--border);margin:4px 0}
 
-/* Move sheet */
 .sheet-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:2000;animation:fadeIn 0.2s}
 .sheet{position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-radius:24px 24px 0 0;padding:20px;z-index:2001;box-shadow:var(--sh3);animation:sheetUp 0.28s cubic-bezier(0.34,1.56,0.64,1)}
 @keyframes sheetUp{from{transform:translateY(100%)}to{transform:none}}
@@ -314,12 +290,10 @@ body.dark .ctx-item.danger:hover{background:rgba(244,63,94,0.12)}
 .sheet-cancel{width:100%;padding:13px;border:none;border-radius:12px;background:var(--border);color:var(--text2);font-family:'Nunito',sans-serif;font-weight:700;font-size:14px;cursor:pointer;margin-top:4px;transition:all 0.15s}
 .sheet-cancel:hover{background:var(--border2);color:var(--text)}
 
-/* FAB */
 .fab{display:none;position:fixed;bottom:22px;right:22px;width:54px;height:54px;background:linear-gradient(135deg,var(--purple),#a78bfa);border:none;border-radius:17px;cursor:pointer;align-items:center;justify-content:center;box-shadow:0 6px 24px rgba(124,92,252,0.45);z-index:500;transition:all 0.2s}
 .fab:hover{transform:translateY(-2px) scale(1.05);box-shadow:0 10px 32px rgba(124,92,252,0.55)}
 .fab svg{color:#fff}
 
-/* Responsive */
 @media(hover:none){.task-actions{opacity:1!important}.col-menu-btn{opacity:1!important}}
 
 @media(max-width:768px){
@@ -334,7 +308,6 @@ body.dark .ctx-item.danger:hover{background:rgba(244,63,94,0.12)}
   .stat-num{font-size:22px}
   .stat-card:last-child{grid-column:1/-1}
 
-  /* Vertical scroll on mobile — columns stack on top of each other */
   .board{
     padding:14px 14px 80px;
     gap:14px;
@@ -366,7 +339,6 @@ body.dark .ctx-item.danger:hover{background:rgba(244,63,94,0.12)}
 <script type="text/babel">
 const { useState, useEffect, useRef, useCallback } = React;
 
-// ── Constants ───────────────────────────────────────────────────────────────
 const COL_STYLES = [
   { ca:'#7c5cfc', bg:'#eee9ff' },
   { ca:'#ff9f43', bg:'#fff3dc' },
@@ -385,7 +357,6 @@ const defaultCols = [
   {id:'c3',title:'Done'},
 ];
 
-// ── Icons ───────────────────────────────────────────────────────────────────
 const Icon = {
   grid: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round"><path d="M2 8c3-4 7-4 10 0s7 4 10 0"/><path d="M2 12c3-4 7-4 10 0s7 4 10 0"/><path d="M2 16c3-4 7-4 10 0s7 4 10 0"/></svg>,
   search: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>,
@@ -400,7 +371,6 @@ const Icon = {
   chart: <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg>,
 };
 
-// ── useLocalStorage hook ────────────────────────────────────────────────────
 function useLocalStorage(key, init) {
   const [val, setVal] = useState(() => {
     try { const s = localStorage.getItem(key); return s ? JSON.parse(s) : init; }
@@ -410,7 +380,6 @@ function useLocalStorage(key, init) {
   return [val, setVal];
 }
 
-// ── TaskModal Component ─────────────────────────────────────────────────────
 function TaskModal({ task, columns, defaultColId, onSave, onClose }) {
   const [title, setTitle] = useState(task?.title || '');
   const [desc, setDesc] = useState(task?.desc || '');
@@ -471,7 +440,6 @@ function TaskModal({ task, columns, defaultColId, onSave, onClose }) {
   );
 }
 
-// ── MoveSheet Component ─────────────────────────────────────────────────────
 function MoveSheet({ task, columns, colStyles, onMove, onClose }) {
   const others = columns.filter(c => c.id !== task.colId);
   return (
@@ -496,8 +464,7 @@ function MoveSheet({ task, columns, colStyles, onMove, onClose }) {
   );
 }
 
-// ── ContextMenu Component ───────────────────────────────────────────────────
-function ContextMenu({ x, y, items, onClose }) {
+function ContextMenu({ items, onClose }) {
   const ref = useRef();
   useEffect(() => {
     const h = e => { if (!ref.current?.contains(e.target)) onClose(); };
@@ -505,7 +472,7 @@ function ContextMenu({ x, y, items, onClose }) {
     return () => document.removeEventListener('click', h);
   }, []);
   return (
-    <div ref={ref} className="ctx" style={{left:Math.min(x,window.innerWidth-180),top:y}}>
+    <div ref={ref} className="ctx">
       {items.map((item,i) => item === 'divider'
         ? <div key={i} className="ctx-div"/>
         : <div key={i} className={`ctx-item${item.danger?' danger':''}`} onClick={()=>{item.action();onClose();}}>
@@ -516,7 +483,6 @@ function ContextMenu({ x, y, items, onClose }) {
   );
 }
 
-// ── TaskCard Component ──────────────────────────────────────────────────────
 function TaskCard({ task, colAccent, onEdit, onDelete, onMove, onDragStart, onDragEnd }) {
   const [dragging, setDragging] = useState(false);
   const touchRef = useRef({});
@@ -534,7 +500,6 @@ function TaskCard({ task, colAccent, onEdit, onDelete, onMove, onDragStart, onDr
     const rect = card.getBoundingClientRect();
     touchRef.current = { id: task.id, startX: t.clientX, startY: t.clientY, moved: false };
     onDragStart(task.id);
-    // clone after brief delay to distinguish tap from drag
     touchRef.current.timer = setTimeout(() => {
       const clone = card.cloneNode(true);
       clone.style.cssText = `position:fixed;left:${rect.left}px;top:${rect.top}px;width:${rect.width}px;
@@ -559,7 +524,6 @@ function TaskCard({ task, colAccent, onEdit, onDelete, onMove, onDragStart, onDr
     tr.clone.style.left = (parseFloat(tr.clone.style.left)+dx) + 'px';
     tr.clone.style.top  = (parseFloat(tr.clone.style.top)+dy)  + 'px';
     tr.startX = t.clientX; tr.startY = t.clientY;
-    // highlight column under finger
     tr.clone.style.display = 'none';
     const el = document.elementFromPoint(t.clientX, t.clientY);
     tr.clone.style.display = '';
@@ -609,11 +573,10 @@ function TaskCard({ task, colAccent, onEdit, onDelete, onMove, onDragStart, onDr
   );
 }
 
-// ── Column Component ────────────────────────────────────────────────────────
 function Column({ col, idx, tasks, totalTasks, onAddTask, onEditTask, onDeleteTask, onMoveTask, onRename, onDelete, dragState, onDragOver, onDrop, onDragLeave }) {
   const s = cs(idx);
   const pct = totalTasks ? Math.round(tasks.length / totalTasks * 100) : 0;
-  const [ctx, setCtx] = useState(null);
+  const [ctx, setCtx] = useState(false);
   const nameRef = useRef();
 
   return (
@@ -625,7 +588,6 @@ function Column({ col, idx, tasks, totalTasks, onAddTask, onEditTask, onDeleteTa
       onDrop={e=>{e.preventDefault();onDrop(col.id)}}
       onDragLeave={e=>{if(!e.currentTarget.contains(e.relatedTarget))onDragLeave(col.id)}}
     >
-      {/* Header */}
       <div className="col-head">
         <div className="col-badge" style={{background:s.bg}}>
           <div className="col-dot" style={{background:s.ca}}/>
@@ -639,14 +601,23 @@ function Column({ col, idx, tasks, totalTasks, onAddTask, onEditTask, onDeleteTa
           />
         </div>
         <div className="col-cnt" style={{background:s.ca}}>{tasks.length}</div>
-        <button className="col-menu-btn" onClick={e=>{
-          e.stopPropagation();
-          const r = e.currentTarget.getBoundingClientRect();
-          setCtx({x:r.left, y:r.bottom+8});
-        }}>{Icon.dots}</button>
+        
+        <div style={{ position: 'relative', flexShrink: 0 }}>
+          <button className="col-menu-btn" onClick={e=>{
+            e.stopPropagation();
+            setCtx(!ctx);
+          }}>{Icon.dots}</button>
+          
+          {ctx && (
+            <ContextMenu onClose={()=>setCtx(false)} items={[
+              {icon:Icon.plus, label:'Add task', action:()=>onAddTask(col.id)},
+              'divider',
+              {icon:Icon.trash, label:'Delete column', danger:true, action:()=>onDelete(col.id)},
+            ]}/>
+          )}
+        </div>
       </div>
 
-      {/* Progress */}
       <div className="col-prog-wrap">
         <div className="col-prog-labels"><span>{tasks.length} tasks</span><span>{pct}%</span></div>
         <div className="col-prog-track">
@@ -654,7 +625,6 @@ function Column({ col, idx, tasks, totalTasks, onAddTask, onEditTask, onDeleteTa
         </div>
       </div>
 
-      {/* Tasks */}
       <div className="tasks">
         {tasks.length === 0 && (
           <div className="empty-col">
@@ -676,34 +646,22 @@ function Column({ col, idx, tasks, totalTasks, onAddTask, onEditTask, onDeleteTa
         ))}
       </div>
 
-      {/* Add */}
       <button className="add-col-btn" onClick={()=>onAddTask(col.id)}>
         {Icon.plus} Add Task
       </button>
-
-      {/* Context Menu */}
-      {ctx && (
-        <ContextMenu x={ctx.x} y={ctx.y} onClose={()=>setCtx(null)} items={[
-          {icon:Icon.plus, label:'Add task', action:()=>onAddTask(col.id)},
-          'divider',
-          {icon:Icon.trash, label:'Delete column', danger:true, action:()=>onDelete(col.id)},
-        ]}/>
-      )}
     </div>
   );
 }
 
-// ── DonutChart Component ────────────────────────────────────────────────────
 function DonutChart({ segments }) {
   const size = 200;
   const cx = size / 2, cy = size / 2;
-  const R = 72, r = 44; // outer & inner radius → thick ring like image
+  const R = 72, r = 44; 
   const total = segments.reduce((s, seg) => s + seg.value, 0) || 1;
   const [hovered, setHovered] = React.useState(null);
 
-  // Build SVG arc paths
   let paths = [];
-  let angle = -90; // start from top
+  let angle = -90; 
   segments.forEach((seg, i) => {
     const slice = (seg.value / total) * 360;
     const startAngle = angle;
@@ -726,7 +684,7 @@ function DonutChart({ segments }) {
       `A ${R} ${R} 0 ${large} 1 ${x2} ${y2}`,
       `L ${ix2} ${iy2}`,
       `A ${r} ${r} 0 ${large} 0 ${ix1} ${iy1}`,
-      'Z'
+      `Z`
     ].join(' ');
 
     paths.push({ d, color: seg.color, label: seg.label, value: seg.value, pct: Math.round(seg.value/total*100), i });
@@ -736,7 +694,6 @@ function DonutChart({ segments }) {
 
   return (
     <div style={{display:'flex', flexDirection:'column', alignItems:'center', gap:24}}>
-      {/* SVG Donut */}
       <div style={{position:'relative'}}>
         <svg width={size} height={size} style={{filter:'drop-shadow(0 8px 24px rgba(0,0,0,0.12))'}}>
           {paths.map((p, i) => (
@@ -755,7 +712,6 @@ function DonutChart({ segments }) {
               onMouseLeave={() => setHovered(null)}
             />
           ))}
-          {/* Center text */}
           {active ? (
             <>
               <text x={cx} y={cy-10} textAnchor="middle" fontSize="22" fontWeight="900"
@@ -776,7 +732,6 @@ function DonutChart({ segments }) {
         </svg>
       </div>
 
-      {/* Legend with % like the image */}
       <div style={{display:'flex', gap:20, flexWrap:'wrap', justifyContent:'center'}}>
         {paths.map((p, i) => (
           <div key={i}
@@ -798,7 +753,6 @@ function DonutChart({ segments }) {
   );
 }
 
-// ── App ─────────────────────────────────────────────────────────────────────
 function App() {
   const [dark, setDark] = useLocalStorage('ktf_dark', false);
   const [columns, setColumns] = useLocalStorage('ktf_cols', defaultCols);
@@ -816,7 +770,6 @@ function App() {
     document.body.classList.toggle('dark', dark);
   }, [dark]);
 
-  // Summary stats
   const total = tasks.length;
   const doneIdx = columns.length - 1;
   const doneCnt = tasks.filter(t => t.colId === columns[doneIdx]?.id).length;
@@ -835,18 +788,15 @@ function App() {
     {e:'🔥', n:highCnt, l:'High Priority',col:'#f43f5e', bg:'#ffe4e8'},
   ];
 
-  // Bar chart
   const maxN = Math.max(...columns.map(c=>tasks.filter(t=>t.colId===c.id).length), 1);
   const bars = columns.map((col,i)=>{
     const n = tasks.filter(t=>t.colId===col.id).length;
     return { label:col.title, n, pct: total?Math.round(n/total*100):0, color:cs(i).ca, h:Math.round(n/maxN*100) };
   });
 
-  // Filtered tasks
   const q = search.toLowerCase();
   const filtered = q ? tasks.filter(t=>t.title.toLowerCase().includes(q)||(t.desc||'').toLowerCase().includes(q)) : tasks;
 
-  // Task CRUD
   const addTask = (colId) => setModal({ task: null, colId });
   const editTask = (task) => setModal({ task, colId: task.colId });
 
@@ -868,7 +818,6 @@ function App() {
     setMoveSheet(null);
   };
 
-  // Column CRUD
   const addColumn = () => {
     setColumns(prev => [...prev, {id:'c'+nCol, title:'New Column'}]);
     setNCol(n=>n+1);
@@ -886,7 +835,6 @@ function App() {
     setTasks(prev => prev.filter(t=>t.colId!==id));
   };
 
-  // Drag
   const dragState = {
     onDragStart: id => setDragId(id),
     onDragEnd: () => { setDragId(null); setOverCol(null); },
@@ -899,7 +847,6 @@ function App() {
 
   return (
     <>
-      {/* Header */}
       <header className="header">
         <div className="logo">
           <div className="logo-box">{Icon.grid}</div>
@@ -925,7 +872,6 @@ function App() {
         </div>
       </header>
 
-      {/* Summary */}
       <div className="summary">
         {stats.map((s,i) => (
           <div key={i} className="stat-card" style={{animationDelay:`${i*0.06}s`}}>
@@ -938,9 +884,6 @@ function App() {
         ))}
       </div>
 
-      {/* Progress — REMOVED from main view, now in Analytics modal */}
-
-      {/* Board — now takes full vertical space */}
       <div className="board">
         {columns.map((col, idx) => (
           <Column
@@ -963,12 +906,10 @@ function App() {
         ))}
       </div>
 
-      {/* FAB (mobile) */}
       <button className="fab" onClick={()=>addTask(columns[0]?.id)}>
         {Icon.plus}
       </button>
 
-      {/* Analytics Modal */}
       {showAnalytics && (
         <div className="analytics-overlay" onClick={e=>e.target.classList.contains('analytics-overlay')&&setShowAnalytics(false)}>
           <div className="analytics-modal">
@@ -980,7 +921,6 @@ function App() {
               <button className="modal-close" onClick={()=>setShowAnalytics(false)}>×</button>
             </div>
             <div className="analytics-body">
-              {/* Stat pills */}
               <div className="analytics-pills">
                 {stats.map((s,i)=>(
                   <div key={i} className="analytics-pill">
@@ -989,7 +929,6 @@ function App() {
                   </div>
                 ))}
               </div>
-              {/* Donut Chart */}
               <div style={{marginBottom:8}}>
                 <div className="prog-title" style={{marginBottom:20, textAlign:'center'}}>Task Distribution</div>
                 <DonutChart segments={bars.map(b=>({label:b.label, value:b.n, color:b.color}))} />
@@ -999,7 +938,6 @@ function App() {
         </div>
       )}
 
-      {/* Task Modal */}
       {modal && (
         <TaskModal
           task={modal.task}
@@ -1010,7 +948,6 @@ function App() {
         />
       )}
 
-      {/* Move Sheet */}
       {moveSheet && (
         <MoveSheet
           task={tasks.find(t=>t.id===moveSheet)}
