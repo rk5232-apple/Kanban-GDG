@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ZenBoard</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#f0f2f8;
+  --surface:#ffffff;
+  --surface2:#f7f8fc;
+  --text:#1a1d2e;
+  --text2:#7b82a0;
+  --text3:#b0b7d0;
+  --border:#e4e8f2;
+  --border2:#d0d5e8;
+  --sh1:0 2px 12px rgba(100,110,180,0.08);
+  --sh2:0 8px 32px rgba(100,110,180,0.13);
+  --sh3:0 20px 60px rgba(100,110,180,0.18);
+  --r:20px;--rsm:14px;--rxs:10px;
+  --purple:#7c5cfc;--orange:#ff9f43;--green:#26d07c;--blue:#3b82f6;--pink:#ec4899;--red:#f43f5e;
+}
+
+body.dark{
+  --bg:#0d0f18;--surface:#141720;--surface2:#1a1d2a;
+  --text:#e8eaf6;--text2:#8b8faa;--text3:#454860;
+  --border:#22263a;--border2:#2e334d;
+  --sh1:0 2px 12px rgba(0,0,0,0.4);
+  --sh2:0 8px 32px rgba(0,0,0,0.5);
+  --sh3:0 20px 60px rgba(0,0,0,0.6);
+}
+
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background 0.3s,color 0.3s}
+
+/* Scrollbars */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+
+/* Header */
+.header{
+  position:sticky;top:0;z-index:200;
+  background:var(--surface);
+  border-bottom:1px solid var(--border);
+  box-shadow:var(--sh1);
+  height:66px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;
+  transition:background 0.3s,border-color 0.3s;
+}
+
+.logo{display:flex;align-items:center;gap:10px;font-family:'Nunito',sans-serif;font-weight:900;font-size:20px;color:var(--text);text-decoration:none}
+.logo-box{
+  width:36px;height:36px;border-radius:11px;
+  background:linear-gradient(135deg,var(--purple),#a78bfa);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 14px rgba(124,92,252,0.35);
+  flex-shrink:0;
+}
+.logo-box svg{color:#fff}
+
+.search-bar{
+  display:flex;align-items:center;gap:8px;
+  background:var(--surface2);border:1.5px solid var(--border);
+  border-radius:12px;padding:8px 16px;
+  transition:all 0.2s;width:220px;
+}
+.search-bar:focus-within{border-color:var(--purple);box-shadow:0 0 0 3px rgba(124,92,252,0.1)}
+.search-bar svg{color:var(--text3);flex-shrink:0}
+.search-bar input{background:none;border:none;outline:none;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;width:100%}
+.search-bar input::placeholder{color:var(--text3)}
+
+.hdr-actions{display:flex;align-items:center;gap:8px}
+
+.btn{
+  display:inline-flex;align-items:center;gap:6px;
+  border:none;border-radius:10px;cursor:pointer;
+  font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;
+  padding:9px 16px;transition:all 0.2s;
+}
+
+/* Colorful header buttons in light mode */
+.btn-theme{
+  background:linear-gradient(135deg,#eee9ff,#dbeafe);
+  color:#7c5cfc;border:1.5px solid #d4c8ff;
+}
+.btn-theme:hover{background:linear-gradient(135deg,#ddd0ff,#c7dcff);transform:translateY(-1px);box-shadow:0 4px 12px rgba(124,92,252,0.2)}
+
+.btn-analytics{
+  background:linear-gradient(135deg,#fff3dc,#fce7f3);
+  color:#d97706;border:1.5px solid #fde8b0;
+}
+.btn-analytics:hover{background:linear-gradient(135deg,#ffe8b0,#fad4eb);transform:translateY(-1px);box-shadow:0 4px 12px rgba(255,159,67,0.2)}
+
+.btn-col{
+  background:linear-gradient(135deg,#d4f7e8,#dbeafe);
+  color:#059669;border:1.5px solid #a7f0cc;
+}
+.btn-col:hover{background:linear-gradient(135deg,#b8f0d8,#c7dcff);transform:translateY(-1px);box-shadow:0 4px 12px rgba(38,208,124,0.2)}
+
+.btn-ghost{background:var(--surface2);color:var(--text2);border:1.5px solid var(--border)}
+.btn-ghost:hover{background:var(--border);color:var(--text);border-color:var(--border2)}
+
+.btn-primary{background:linear-gradient(135deg,var(--purple),#a78bfa);color:#fff;box-shadow:0 4px 14px rgba(124,92,252,0.3)}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 22px rgba(124,92,252,0.42)}
+.btn-icon{padding:9px;width:38px;justify-content:center}
+
+/* Dark mode — tone down colorful btns */
+body.dark .btn-theme{background:rgba(124,92,252,0.15);color:#a78bfa;border-color:rgba(124,92,252,0.3)}
+body.dark .btn-analytics{background:rgba(255,159,67,0.15);color:#fbbf24;border-color:rgba(255,159,67,0.3)}
+body.dark .btn-col{background:rgba(38,208,124,0.15);color:#34d399;border-color:rgba(38,208,124,0.3)}
+
+/* Summary — compact slim row */
+.summary{display:flex;gap:10px;padding:14px 28px 0;overflow-x:auto}
+.summary::-webkit-scrollbar{display:none}
+
+.stat-card{
+  background:var(--surface);border:1.5px solid var(--border);
+  border-radius:12px;padding:10px 16px;
+  display:flex;align-items:center;gap:10px;
+  min-width:120px;flex:1;
+  box-shadow:var(--sh1);
+  transition:transform 0.2s,box-shadow 0.2s,background 0.3s;
+  cursor:default;
+}
+.stat-card:hover{transform:translateY(-1px);box-shadow:var(--sh2)}
+.stat-icon{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.stat-num{font-family:'Nunito',sans-serif;font-weight:900;font-size:20px;line-height:1}
+.stat-lbl{font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:0.4px;margin-top:2px}
+
+/* Analytics modal */
+.analytics-overlay{position:fixed;inset:0;background:rgba(15,17,30,0.55);backdrop-filter:blur(14px);z-index:1000;display:flex;align-items:center;justify-content:center;padding:24px;animation:fadeIn 0.2s ease}
+.analytics-modal{background:var(--surface);border:1.5px solid var(--border2);border-radius:24px;width:100%;max-width:540px;box-shadow:var(--sh3);animation:popIn 0.28s cubic-bezier(0.34,1.56,0.64,1)}
+.analytics-head{padding:22px 22px 16px;border-bottom:1.5px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.analytics-body{padding:24px}
+
+/* Progress section — now inside analytics modal only */
+.prog-card{transition:background 0.3s}
+.prog-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;gap:12px;flex-wrap:wrap}
+.prog-title{font-family:'Nunito',sans-serif;font-weight:800;font-size:15px}
+.prog-sub{font-size:12px;color:var(--text2);margin-top:2px}
+.legend{display:flex;gap:12px;flex-wrap:wrap}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--text2)}
+.legend-dot{width:8px;height:8px;border-radius:50%}
+.bar-chart{display:flex;align-items:flex-end;gap:10px;height:120px}
+.bar-group{display:flex;flex-direction:column;align-items:center;gap:5px;flex:1}
+.bar-pct{font-family:'Nunito',sans-serif;font-weight:900;font-size:13px;color:var(--text)}
+.bar-track{width:100%;background:var(--surface2);border-radius:10px;height:80px;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;border:1px solid var(--border)}
+.bar-fill{width:100%;border-radius:10px;transition:height 1s cubic-bezier(0.34,1.56,0.64,1)}
+.bar-lbl{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.3px;text-align:center}
+
+/* Analytics stat pills */
+.analytics-pills{display:flex;gap:10px;margin-bottom:22px;flex-wrap:wrap}
+.analytics-pill{flex:1;min-width:100px;background:var(--surface2);border:1.5px solid var(--border);border-radius:12px;padding:12px 14px;text-align:center}
+.ap-num{font-family:'Nunito',sans-serif;font-weight:900;font-size:22px;line-height:1;margin-bottom:3px}
+.ap-lbl{font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:0.4px}
+
+/* Board — give it max vertical height */
+.board{display:flex;gap:18px;padding:14px 28px 32px;overflow-x:auto;align-items:flex-start;min-height:calc(100vh - 140px)}
+.board::-webkit-scrollbar{height:6px}
+
+/* Column */
+.column{
+  background:var(--surface);border:1.5px solid var(--border);
+  border-radius:var(--r);width:300px;min-width:300px;
+  display:flex;flex-direction:column;
+  box-shadow:var(--sh1);
+  transition:box-shadow 0.2s,border-color 0.2s,background 0.3s;
+  animation:colIn 0.3s ease both;
+}
+@keyframes colIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+.column.drag-over{
+  box-shadow:0 0 0 2px var(--ca,var(--purple)),var(--sh2);
+  border-color:var(--ca,var(--purple));
+}
+
+.col-head{padding:16px 14px 10px;display:flex;align-items:center;gap:8px}
+.col-badge{flex:1;border-radius:100px;padding:7px 12px 7px 10px;display:flex;align-items:center;gap:7px}
+.col-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.col-name{
+  font-family:'Nunito',sans-serif;font-weight:800;font-size:13px;
+  background:none;border:none;outline:none;cursor:text;
+  letter-spacing:0.2px;width:100%;
+}
+.col-cnt{font-family:'Nunito',sans-serif;font-weight:900;font-size:12px;border-radius:100px;padding:3px 10px;min-width:26px;text-align:center;color:#fff;flex-shrink:0}
+.col-menu-btn{background:var(--surface2);border:1px solid var(--border);border-radius:9px;color:var(--text2);cursor:pointer;width:30px;height:30px;display:flex;align-items:center;justify-content:center;opacity:0;transition:all 0.15s;flex-shrink:0}
+.col-head:hover .col-menu-btn{opacity:1}
+.col-menu-btn:hover{background:var(--border);color:var(--text)}
+
+.col-prog-wrap{padding:0 14px 12px}
+.col-prog-labels{display:flex;justify-content:space-between;font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.3px;margin-bottom:5px}
+.col-prog-track{background:var(--surface2);border-radius:100px;height:5px;overflow:hidden;border:1px solid var(--border)}
+.col-prog-fill{height:100%;border-radius:100px;transition:width 1s cubic-bezier(0.34,1.56,0.64,1)}
+
+.tasks{padding:0 10px;display:flex;flex-direction:column;gap:9px;overflow-y:auto;max-height:460px}
+.empty-col{padding:28px 10px;text-align:center;color:var(--text3);font-size:12px;font-weight:600;line-height:1.8}
+.empty-col span{font-size:24px;display:block;margin-bottom:6px}
+
+.add-col-btn{
+  margin:10px 10px 12px;
+  background:none;
+  border:1.5px dashed var(--border2);
+  border-radius:var(--rsm);
+  color:var(--text3);cursor:pointer;
+  font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;
+  padding:10px;display:flex;align-items:center;justify-content:center;gap:6px;
+  transition:all 0.2s;
+}
+.add-col-btn:hover{
+  border-color:var(--ca,var(--purple));
+  color:var(--ca,var(--purple));
+  background:rgba(0,0,0,0.02);
+}
+
+/* Task Card */
+.task-card{
+  background:var(--surface);border:1.5px solid var(--border);
+  border-radius:var(--rsm);padding:13px;cursor:grab;
+  transition:transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+  animation:cardIn 0.25s ease both;
+  position:relative;
+}
+@keyframes cardIn{from{opacity:0;transform:translateY(-6px) scale(0.97)}to{opacity:1;transform:none}}
+.task-card:hover{
+  border-color:var(--ca,var(--purple));
+  box-shadow:0 10px 36px rgba(0,0,0,0.13), 0 2px 8px rgba(0,0,0,0.06);
+  transform:translateY(-3px);
+}
+.task-card.dragging{opacity:0.3;cursor:grabbing}
+.task-card.drag-target{border-color:var(--purple);border-style:dashed;background:rgba(124,92,252,0.04)}
+
+.task-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;gap:6px}
+.chip{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:0.4px;padding:3px 10px;border-radius:100px;flex-shrink:0}
+
+/* Fix 4: darker text for better contrast */
+.chip-high{background:#ffd6db;color:#c0162f}
+.chip-medium{background:#ffe8bc;color:#b85e00}
+.chip-low{background:#b8f0d6;color:#0e7a47}
+
+body.dark .chip-high{background:rgba(244,63,94,0.18);color:#ff6b84}
+body.dark .chip-medium{background:rgba(255,159,67,0.18);color:#ffb347}
+body.dark .chip-low{background:rgba(38,208,124,0.18);color:#2ee89a}
+
+.task-actions{display:flex;gap:3px;opacity:0;transition:opacity 0.15s}
+.task-card:hover .task-actions{opacity:1}
+.tact-btn{background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text2);cursor:pointer;padding:5px;display:flex;align-items:center;transition:all 0.15s}
+.tact-btn:hover{background:var(--border);color:var(--text)}
+.tact-btn.del:hover{background:#ffe4e8;color:#f43f5e;border-color:rgba(244,63,94,0.2)}
+.tact-btn.move{background:var(--surface2)}
+
+.task-title{font-weight:700;font-size:14px;line-height:1.4;margin-bottom:5px;color:var(--text)}
+.task-desc{font-size:12px;color:var(--text2);line-height:1.55;margin-bottom:11px}
+.task-foot{display:flex;align-items:center;justify-content:space-between}
+.task-tag{background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:3px 9px;font-size:11px;font-weight:600;color:var(--text2)}
+.task-date{font-size:11px;color:var(--text3);font-weight:600;display:flex;align-items:center;gap:4px}
+
+/* Modal */
+.overlay{position:fixed;inset:0;background:rgba(15,17,30,0.5);backdrop-filter:blur(12px);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeIn 0.2s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal{background:var(--surface);border:1.5px solid var(--border2);border-radius:24px;width:100%;max-width:460px;box-shadow:var(--sh3);animation:popIn 0.28s cubic-bezier(0.34,1.56,0.64,1);overflow:hidden}
+@keyframes popIn{from{opacity:0;transform:scale(0.88) translateY(16px)}to{opacity:1;transform:none}}
+.modal-head{
+  padding:22px 22px 18px;
+  border-bottom:1.5px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  background:linear-gradient(135deg,#eee9ff 0%,#dbeafe 50%,#d4f7e8 100%);
+  position:relative;overflow:hidden;
+}
+.modal-head::before{
+  content:'';position:absolute;top:-20px;right:-20px;
+  width:100px;height:100px;border-radius:50%;
+  background:radial-gradient(circle,rgba(124,92,252,0.15),transparent 70%);
+  pointer-events:none;
+}
+body.dark .modal-head{background:linear-gradient(135deg,rgba(124,92,252,0.12) 0%,rgba(59,130,246,0.08) 50%,rgba(38,208,124,0.08) 100%)}
+.modal-title{font-family:'Nunito',sans-serif;font-weight:900;font-size:18px;color:var(--purple)}
+body.dark .modal-title{color:#a78bfa}
+.modal-close{background:rgba(255,255,255,0.7);border:1px solid rgba(124,92,252,0.2);border-radius:10px;color:var(--purple);cursor:pointer;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:20px;transition:all 0.15s;backdrop-filter:blur(4px)}
+.modal-close:hover{background:#ffe4e8;color:#f43f5e;border-color:rgba(244,63,94,0.2)}
+body.dark .modal-close{background:rgba(255,255,255,0.08);color:#a78bfa}
+.modal-body{padding:22px;display:flex;flex-direction:column;gap:16px}
+.modal-foot{padding:16px 22px;border-top:1.5px solid var(--border);display:flex;gap:10px;justify-content:flex-end}
+.form-label{font-size:11px;font-weight:800;color:var(--text2);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:7px;display:block}
+.form-row{display:flex;gap:12px}
+.form-row>*{flex:1}
+.form-ctrl{background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:500;padding:11px 14px;outline:none;transition:all 0.2s;width:100%}
+textarea.form-ctrl{resize:vertical;min-height:85px}
+.form-ctrl:focus{border-color:var(--purple);background:var(--surface);box-shadow:0 0 0 3px rgba(124,92,252,0.1)}
+select.form-ctrl option{background:var(--surface)}
+
+/* Context Menu */
+.ctx{position:fixed;background:var(--surface);border:1.5px solid var(--border2);border-radius:var(--rsm);padding:7px;min-width:168px;z-index:3000;box-shadow:var(--sh2);animation:fadeIn 0.15s ease}
+.ctx-item{border-radius:9px;color:var(--text2);cursor:pointer;display:flex;align-items:center;gap:9px;font-size:13px;font-weight:600;padding:9px 12px;transition:all 0.12s}
+.ctx-item:hover{background:var(--surface2);color:var(--text)}
+.ctx-item.danger:hover{background:#ffe4e8;color:#f43f5e}
+body.dark .ctx-item.danger:hover{background:rgba(244,63,94,0.12)}
+.ctx-div{height:1px;background:var(--border);margin:4px 0}
+
+/* Move sheet */
+.sheet-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:2000;animation:fadeIn 0.2s}
+.sheet{position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-radius:24px 24px 0 0;padding:20px;z-index:2001;box-shadow:var(--sh3);animation:sheetUp 0.28s cubic-bezier(0.34,1.56,0.64,1)}
+@keyframes sheetUp{from{transform:translateY(100%)}to{transform:none}}
+.sheet-handle{width:40px;height:4px;background:var(--border2);border-radius:2px;margin:0 auto 16px}
+.sheet-title{font-family:'Nunito',sans-serif;font-weight:800;font-size:15px;margin-bottom:14px}
+.sheet-col-btn{width:100%;padding:13px 16px;border-radius:12px;background:var(--surface2);border:1.5px solid var(--border);margin-bottom:8px;font-weight:600;font-size:14px;color:var(--text);cursor:pointer;display:flex;align-items:center;gap:10px;transition:all 0.15s;font-family:'Plus Jakarta Sans',sans-serif}
+.sheet-col-btn:hover{border-color:var(--purple);background:rgba(124,92,252,0.05)}
+.sheet-cancel{width:100%;padding:13px;border:none;border-radius:12px;background:var(--border);color:var(--text2);font-family:'Nunito',sans-serif;font-weight:700;font-size:14px;cursor:pointer;margin-top:4px;transition:all 0.15s}
+.sheet-cancel:hover{background:var(--border2);color:var(--text)}
+
+/* FAB */
+.fab{display:none;position:fixed;bottom:22px;right:22px;width:54px;height:54px;background:linear-gradient(135deg,var(--purple),#a78bfa);border:none;border-radius:17px;cursor:pointer;align-items:center;justify-content:center;box-shadow:0 6px 24px rgba(124,92,252,0.45);z-index:500;transition:all 0.2s}
+.fab:hover{transform:translateY(-2px) scale(1.05);box-shadow:0 10px 32px rgba(124,92,252,0.55)}
+.fab svg{color:#fff}
+
+/* Responsive */
+@media(hover:none){.task-actions{opacity:1!important}.col-menu-btn{opacity:1!important}}
+
+@media(max-width:768px){
+  .header{padding:0 14px;height:60px}
+  .search-bar{display:none}
+  .logo{font-size:17px}
+  .logo-box{width:30px;height:30px;border-radius:9px}
+  .hdr-lbl{display:none}
+  .summary{padding:14px 14px 0;display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+  .stat-card{min-width:unset;padding:13px 14px;border-radius:16px}
+  .stat-icon{width:38px;height:38px;font-size:18px;border-radius:11px}
+  .stat-num{font-size:22px}
+  .stat-card:last-child{grid-column:1/-1}
+
+  /* Vertical scroll on mobile — columns stack on top of each other */
+  .board{
+    padding:14px 14px 80px;
+    gap:14px;
+    flex-direction:column;
+    overflow-x:hidden;
+    overflow-y:auto;
+    min-height:unset;
+    align-items:stretch;
+  }
+  .column{
+    width:100% !important;
+    min-width:unset !important;
+    max-height:none;
+    scroll-snap-align:unset;
+  }
+  .tasks{max-height:none}
+  .fab{display:flex}
+  .overlay{align-items:flex-end;padding:0}
+  .modal{border-radius:24px 24px 0 0;max-width:100%}
+  .modal-head{border-radius:24px 24px 0 0}
+  .btn-theme,.btn-analytics,.btn-col{padding:9px;width:38px;justify-content:center}
+  .btn-theme span,.btn-analytics span,.btn-col span{display:none}
+}
+@media(min-width:769px){.fab{display:none}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect, useRef, useCallback } = React;
+
+// ── Constants ───────────────────────────────────────────────────────────────
+const COL_STYLES = [
+  { ca:'#7c5cfc', bg:'#eee9ff' },
+  { ca:'#ff9f43', bg:'#fff3dc' },
+  { ca:'#26d07c', bg:'#d4f7e8' },
+  { ca:'#3b82f6', bg:'#dbeafe' },
+  { ca:'#ec4899', bg:'#fce7f3' },
+  { ca:'#f43f5e', bg:'#ffe4e8' },
+];
+const cs = i => COL_STYLES[i % COL_STYLES.length];
+
+const fmtDate = ts => new Date(ts).toLocaleDateString('en-US',{month:'short',day:'numeric'});
+
+const defaultCols = [
+  {id:'c1',title:'Todo'},
+  {id:'c2',title:'In Progress'},
+  {id:'c3',title:'Done'},
+];
+
+// ── Icons ───────────────────────────────────────────────────────────────────
+const Icon = {
+  grid: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round"><path d="M2 8c3-4 7-4 10 0s7 4 10 0"/><path d="M2 12c3-4 7-4 10 0s7 4 10 0"/><path d="M2 16c3-4 7-4 10 0s7 4 10 0"/></svg>,
+  search: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>,
+  plus: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>,
+  moon: <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>,
+  sun: <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>,
+  dots: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></svg>,
+  edit: <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>,
+  trash: <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="3,6 5,6 21,6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>,
+  move: <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="5,9 2,12 5,15"/><polyline points="19,9 22,12 19,15"/><line x1="2" y1="12" x2="22" y2="12"/></svg>,
+  cal: <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>,
+  chart: <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg>,
+};
+
+// ── useLocalStorage hook ────────────────────────────────────────────────────
+function useLocalStorage(key, init) {
+  const [val, setVal] = useState(() => {
+    try { const s = localStorage.getItem(key); return s ? JSON.parse(s) : init; }
+    catch { return init; }
+  });
+  useEffect(() => { try { localStorage.setItem(key, JSON.stringify(val)); } catch {} }, [key, val]);
+  return [val, setVal];
+}
+
+// ── TaskModal Component ─────────────────────────────────────────────────────
+function TaskModal({ task, columns, defaultColId, onSave, onClose }) {
+  const [title, setTitle] = useState(task?.title || '');
+  const [desc, setDesc] = useState(task?.desc || '');
+  const [priority, setPriority] = useState(task?.priority || 'medium');
+  const [colId, setColId] = useState(task?.colId || defaultColId || columns[0]?.id);
+  const titleRef = useRef();
+
+  useEffect(() => { setTimeout(() => titleRef.current?.focus(), 80); }, []);
+
+  const handleSave = () => {
+    if (!title.trim()) { titleRef.current?.focus(); return; }
+    onSave({ title: title.trim(), desc: desc.trim(), priority, colId });
+  };
+
+  const handleKey = e => { if (e.key === 'Escape') onClose(); };
+
+  return (
+    <div className="overlay" onClick={e => e.target.classList.contains('overlay') && onClose()} onKeyDown={handleKey}>
+      <div className="modal">
+        <div className="modal-head">
+          <div className="modal-title">{task ? 'Edit Task' : 'New Task'}</div>
+          <button className="modal-close" onClick={onClose}>×</button>
+        </div>
+        <div className="modal-body">
+          <div>
+            <label className="form-label">Title *</label>
+            <input ref={titleRef} className="form-ctrl" value={title} onChange={e=>setTitle(e.target.value)}
+              placeholder="What needs to be done?" maxLength={100}
+              onKeyDown={e=>e.key==='Enter'&&handleSave()}/>
+          </div>
+          <div>
+            <label className="form-label">Description</label>
+            <textarea className="form-ctrl" value={desc} onChange={e=>setDesc(e.target.value)} placeholder="Add more details…"/>
+          </div>
+          <div className="form-row">
+            <div>
+              <label className="form-label">Priority</label>
+              <select className="form-ctrl" value={priority} onChange={e=>setPriority(e.target.value)}>
+                <option value="low">🟢 Low</option>
+                <option value="medium">🟡 Medium</option>
+                <option value="high">🔴 High</option>
+              </select>
+            </div>
+            <div>
+              <label className="form-label">Column</label>
+              <select className="form-ctrl" value={colId} onChange={e=>setColId(e.target.value)}>
+                {columns.map(c=><option key={c.id} value={c.id}>{c.title}</option>)}
+              </select>
+            </div>
+          </div>
+        </div>
+        <div className="modal-foot">
+          <button className="btn btn-ghost" onClick={onClose}>Cancel</button>
+          <button className="btn btn-primary" onClick={handleSave}>{task ? 'Save Changes' : 'Create Task'}</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── MoveSheet Component ─────────────────────────────────────────────────────
+function MoveSheet({ task, columns, colStyles, onMove, onClose }) {
+  const others = columns.filter(c => c.id !== task.colId);
+  return (
+    <>
+      <div className="sheet-overlay" onClick={onClose}/>
+      <div className="sheet">
+        <div className="sheet-handle"/>
+        <div className="sheet-title">Move to…</div>
+        {others.map((c, i) => {
+          const idx = columns.findIndex(x=>x.id===c.id);
+          const s = colStyles(idx);
+          return (
+            <button key={c.id} className="sheet-col-btn" onClick={()=>onMove(c.id)}>
+              <div style={{width:10,height:10,borderRadius:'50%',background:s.ca,flexShrink:0}}/>
+              {c.title}
+            </button>
+          );
+        })}
+        <button className="sheet-cancel" onClick={onClose}>Cancel</button>
+      </div>
+    </>
+  );
+}
+
+// ── ContextMenu Component ───────────────────────────────────────────────────
+function ContextMenu({ x, y, items, onClose }) {
+  const ref = useRef();
+  useEffect(() => {
+    const h = e => { if (!ref.current?.contains(e.target)) onClose(); };
+    setTimeout(() => document.addEventListener('click', h), 50);
+    return () => document.removeEventListener('click', h);
+  }, []);
+  return (
+    <div ref={ref} className="ctx" style={{left:Math.min(x,window.innerWidth-180),top:y}}>
+      {items.map((item,i) => item === 'divider'
+        ? <div key={i} className="ctx-div"/>
+        : <div key={i} className={`ctx-item${item.danger?' danger':''}`} onClick={()=>{item.action();onClose();}}>
+            {item.icon} {item.label}
+          </div>
+      )}
+    </div>
+  );
+}
+
+// ── TaskCard Component ──────────────────────────────────────────────────────
+function TaskCard({ task, colAccent, onEdit, onDelete, onMove, onDragStart, onDragEnd }) {
+  const [dragging, setDragging] = useState(false);
+  const touchRef = useRef({});
+
+  const handleDragStart = e => {
+    setDragging(true);
+    e.dataTransfer.effectAllowed = 'move';
+    onDragStart(task.id);
+  };
+  const handleDragEnd = () => { setDragging(false); onDragEnd(); };
+
+  const handleTouchStart = e => {
+    const t = e.touches[0];
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    touchRef.current = { id: task.id, startX: t.clientX, startY: t.clientY, moved: false };
+    onDragStart(task.id);
+    // clone after brief delay to distinguish tap from drag
+    touchRef.current.timer = setTimeout(() => {
+      const clone = card.cloneNode(true);
+      clone.style.cssText = `position:fixed;left:${rect.left}px;top:${rect.top}px;width:${rect.width}px;
+        opacity:0.9;pointer-events:none;z-index:9999;
+        transform:scale(1.05) rotate(1deg);
+        box-shadow:0 16px 40px rgba(0,0,0,0.3);border-radius:14px;transition:none;`;
+      document.body.appendChild(clone);
+      touchRef.current.clone = clone;
+      card.style.opacity = '0.3';
+      touchRef.current.card = card;
+    }, 120);
+  };
+
+  const handleTouchMove = e => {
+    e.preventDefault();
+    const t = e.touches[0];
+    const tr = touchRef.current;
+    if (!tr.clone) return;
+    tr.moved = true;
+    const dx = t.clientX - tr.startX, dy = t.clientY - tr.startY;
+    const rect = tr.clone.getBoundingClientRect();
+    tr.clone.style.left = (parseFloat(tr.clone.style.left)+dx) + 'px';
+    tr.clone.style.top  = (parseFloat(tr.clone.style.top)+dy)  + 'px';
+    tr.startX = t.clientX; tr.startY = t.clientY;
+    // highlight column under finger
+    tr.clone.style.display = 'none';
+    const el = document.elementFromPoint(t.clientX, t.clientY);
+    tr.clone.style.display = '';
+    document.querySelectorAll('.column').forEach(c=>c.classList.remove('drag-over'));
+    const col = el?.closest('.column');
+    if (col) { tr.lastCol = col.dataset.colid; col.classList.add('drag-over'); }
+    else tr.lastCol = null;
+  };
+
+  const handleTouchEnd = e => {
+    clearTimeout(touchRef.current.timer);
+    const tr = touchRef.current;
+    if (tr.clone) { tr.clone.remove(); }
+    if (tr.card) tr.card.style.opacity = '';
+    document.querySelectorAll('.column').forEach(c=>c.classList.remove('drag-over'));
+    if (tr.lastCol && tr.moved) onMove(task.id, tr.lastCol);
+    onDragEnd();
+    touchRef.current = {};
+  };
+
+  return (
+    <div
+      className={`task-card${dragging?' dragging':''}`}
+      style={{'--ca':colAccent}}
+      draggable
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
+      <div className="task-top">
+        <span className={`chip chip-${task.priority}`}>{task.priority}</span>
+        <div className="task-actions">
+          <button className="tact-btn move" title="Move" onClick={()=>onMove(task.id, null)}>{Icon.move}</button>
+          <button className="tact-btn" title="Edit" onClick={()=>onEdit(task)}>{Icon.edit}</button>
+          <button className="tact-btn del" title="Delete" onClick={()=>onDelete(task.id)}>{Icon.trash}</button>
+        </div>
+      </div>
+      <div className="task-title">{task.title}</div>
+      {task.desc && <div className="task-desc">{task.desc}</div>}
+      <div className="task-foot">
+        <span className="task-tag">Task</span>
+        <span className="task-date">{Icon.cal} {fmtDate(task.at)}</span>
+      </div>
+    </div>
+  );
+}
+
+// ── Column Component ────────────────────────────────────────────────────────
+function Column({ col, idx, tasks, totalTasks, onAddTask, onEditTask, onDeleteTask, onMoveTask, onRename, onDelete, dragState, onDragOver, onDrop, onDragLeave }) {
+  const s = cs(idx);
+  const pct = totalTasks ? Math.round(tasks.length / totalTasks * 100) : 0;
+  const [ctx, setCtx] = useState(null);
+  const nameRef = useRef();
+
+  return (
+    <div
+      className="column"
+      data-colid={col.id}
+      style={{'--ca':s.ca}}
+      onDragOver={e=>{e.preventDefault();onDragOver(col.id)}}
+      onDrop={e=>{e.preventDefault();onDrop(col.id)}}
+      onDragLeave={e=>{if(!e.currentTarget.contains(e.relatedTarget))onDragLeave(col.id)}}
+    >
+      {/* Header */}
+      <div className="col-head">
+        <div className="col-badge" style={{background:s.bg}}>
+          <div className="col-dot" style={{background:s.ca}}/>
+          <input
+            ref={nameRef}
+            className="col-name"
+            style={{color:s.ca}}
+            defaultValue={col.title}
+            onBlur={e=>onRename(col.id, e.target.value)}
+            onKeyDown={e=>e.key==='Enter'&&e.target.blur()}
+          />
+        </div>
+        <div className="col-cnt" style={{background:s.ca}}>{tasks.length}</div>
+        <button className="col-menu-btn" onClick={e=>{
+          e.stopPropagation();
+          const r = e.currentTarget.getBoundingClientRect();
+          setCtx({x:r.left, y:r.bottom+8});
+        }}>{Icon.dots}</button>
+      </div>
+
+      {/* Progress */}
+      <div className="col-prog-wrap">
+        <div className="col-prog-labels"><span>{tasks.length} tasks</span><span>{pct}%</span></div>
+        <div className="col-prog-track">
+          <div className="col-prog-fill" style={{width:`${pct}%`,background:s.ca}}/>
+        </div>
+      </div>
+
+      {/* Tasks */}
+      <div className="tasks">
+        {tasks.length === 0 && (
+          <div className="empty-col">
+            <span>✦</span>
+            Drop tasks here<br/>or add one below
+          </div>
+        )}
+        {tasks.map(t => (
+          <TaskCard
+            key={t.id}
+            task={t}
+            colAccent={s.ca}
+            onEdit={onEditTask}
+            onDelete={onDeleteTask}
+            onMove={(tid, targetColId) => onMoveTask(tid, targetColId)}
+            onDragStart={dragState.onDragStart}
+            onDragEnd={dragState.onDragEnd}
+          />
+        ))}
+      </div>
+
+      {/* Add */}
+      <button className="add-col-btn" onClick={()=>onAddTask(col.id)}>
+        {Icon.plus} Add Task
+      </button>
+
+      {/* Context Menu */}
+      {ctx && (
+        <ContextMenu x={ctx.x} y={ctx.y} onClose={()=>setCtx(null)} items={[
+          {icon:Icon.plus, label:'Add task', action:()=>onAddTask(col.id)},
+          'divider',
+          {icon:Icon.trash, label:'Delete column', danger:true, action:()=>onDelete(col.id)},
+        ]}/>
+      )}
+    </div>
+  );
+}
+
+// ── DonutChart Component ────────────────────────────────────────────────────
+function DonutChart({ segments }) {
+  const size = 200;
+  const cx = size / 2, cy = size / 2;
+  const R = 72, r = 44; // outer & inner radius → thick ring like image
+  const total = segments.reduce((s, seg) => s + seg.value, 0) || 1;
+  const [hovered, setHovered] = React.useState(null);
+
+  // Build SVG arc paths
+  let paths = [];
+  let angle = -90; // start from top
+  segments.forEach((seg, i) => {
+    const slice = (seg.value / total) * 360;
+    const startAngle = angle;
+    const endAngle = angle + slice;
+    angle += slice;
+
+    const toRad = a => (a * Math.PI) / 180;
+    const x1 = cx + R * Math.cos(toRad(startAngle));
+    const y1 = cy + R * Math.sin(toRad(startAngle));
+    const x2 = cx + R * Math.cos(toRad(endAngle));
+    const y2 = cy + R * Math.sin(toRad(endAngle));
+    const ix1 = cx + r * Math.cos(toRad(startAngle));
+    const iy1 = cy + r * Math.sin(toRad(startAngle));
+    const ix2 = cx + r * Math.cos(toRad(endAngle));
+    const iy2 = cy + r * Math.sin(toRad(endAngle));
+    const large = slice > 180 ? 1 : 0;
+
+    const d = [
+      `M ${x1} ${y1}`,
+      `A ${R} ${R} 0 ${large} 1 ${x2} ${y2}`,
+      `L ${ix2} ${iy2}`,
+      `A ${r} ${r} 0 ${large} 0 ${ix1} ${iy1}`,
+      'Z'
+    ].join(' ');
+
+    paths.push({ d, color: seg.color, label: seg.label, value: seg.value, pct: Math.round(seg.value/total*100), i });
+  });
+
+  const active = hovered !== null ? paths[hovered] : null;
+
+  return (
+    <div style={{display:'flex', flexDirection:'column', alignItems:'center', gap:24}}>
+      {/* SVG Donut */}
+      <div style={{position:'relative'}}>
+        <svg width={size} height={size} style={{filter:'drop-shadow(0 8px 24px rgba(0,0,0,0.12))'}}>
+          {paths.map((p, i) => (
+            <path
+              key={i}
+              d={p.d}
+              fill={p.color}
+              opacity={hovered === null || hovered === i ? 1 : 0.35}
+              style={{
+                cursor:'pointer',
+                transform: hovered === i ? `scale(1.04)` : 'scale(1)',
+                transformOrigin: `${cx}px ${cy}px`,
+                transition:'all 0.2s ease',
+              }}
+              onMouseEnter={() => setHovered(i)}
+              onMouseLeave={() => setHovered(null)}
+            />
+          ))}
+          {/* Center text */}
+          {active ? (
+            <>
+              <text x={cx} y={cy-10} textAnchor="middle" fontSize="22" fontWeight="900"
+                fontFamily="Nunito, sans-serif" fill={active.color}>{active.pct}%</text>
+              <text x={cx} y={cy+12} textAnchor="middle" fontSize="11" fontWeight="700"
+                fontFamily="Plus Jakarta Sans, sans-serif" fill="var(--text2)">{active.label}</text>
+              <text x={cx} y={cy+28} textAnchor="middle" fontSize="10" fontWeight="600"
+                fontFamily="Plus Jakarta Sans, sans-serif" fill="var(--text3)">{active.value} tasks</text>
+            </>
+          ) : (
+            <>
+              <text x={cx} y={cy-6} textAnchor="middle" fontSize="26" fontWeight="900"
+                fontFamily="Nunito, sans-serif" fill="var(--text)">{total}</text>
+              <text x={cx} y={cy+14} textAnchor="middle" fontSize="11" fontWeight="700"
+                fontFamily="Plus Jakarta Sans, sans-serif" fill="var(--text2)">Total Tasks</text>
+            </>
+          )}
+        </svg>
+      </div>
+
+      {/* Legend with % like the image */}
+      <div style={{display:'flex', gap:20, flexWrap:'wrap', justifyContent:'center'}}>
+        {paths.map((p, i) => (
+          <div key={i}
+            style={{display:'flex', flexDirection:'column', alignItems:'center', gap:4, cursor:'pointer', opacity: hovered===null||hovered===i?1:0.4, transition:'opacity 0.2s'}}
+            onMouseEnter={() => setHovered(i)}
+            onMouseLeave={() => setHovered(null)}
+          >
+            <div style={{fontFamily:'Nunito,sans-serif', fontWeight:900, fontSize:22, color:'var(--text)', lineHeight:1}}>
+              {p.pct}%
+            </div>
+            <div style={{display:'flex', alignItems:'center', gap:5}}>
+              <div style={{width:8, height:8, borderRadius:'50%', background:p.color, flexShrink:0}}/>
+              <span style={{fontSize:11, fontWeight:700, color:'var(--text2)'}}>{p.label}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ── App ─────────────────────────────────────────────────────────────────────
+function App() {
+  const [dark, setDark] = useLocalStorage('ktf_dark', false);
+  const [columns, setColumns] = useLocalStorage('ktf_cols', defaultCols);
+  const [tasks, setTasks] = useLocalStorage('ktf_tasks', []);
+  const [nCol, setNCol] = useLocalStorage('ktf_ncol', 4);
+  const [nTask, setNTask] = useLocalStorage('ktf_ntask', 1);
+  const [search, setSearch] = useState('');
+  const [modal, setModal] = useState(null);
+  const [moveSheet, setMoveSheet] = useState(null);
+  const [dragId, setDragId] = useState(null);
+  const [overCol, setOverCol] = useState(null);
+  const [showAnalytics, setShowAnalytics] = useState(false);
+
+  useEffect(() => {
+    document.body.classList.toggle('dark', dark);
+  }, [dark]);
+
+  // Summary stats
+  const total = tasks.length;
+  const doneIdx = columns.length - 1;
+  const doneCnt = tasks.filter(t => t.colId === columns[doneIdx]?.id).length;
+  const progCnt = tasks.filter(t => {
+    const i = columns.findIndex(c=>c.id===t.colId);
+    return i > 0 && i < doneIdx;
+  }).length;
+  const todoCnt = tasks.filter(t => t.colId === columns[0]?.id).length;
+  const highCnt = tasks.filter(t => t.priority==='high').length;
+
+  const stats = [
+    {e:'📋', n:total,   l:'Total',       col:'#7c5cfc', bg:'#eee9ff'},
+    {e:'📌', n:todoCnt, l:'To Do',       col:'#3b82f6', bg:'#dbeafe'},
+    {e:'⚡', n:progCnt, l:'In Progress', col:'#ff9f43', bg:'#fff3dc'},
+    {e:'✅', n:doneCnt, l:'Completed',   col:'#26d07c', bg:'#d4f7e8'},
+    {e:'🔥', n:highCnt, l:'High Priority',col:'#f43f5e', bg:'#ffe4e8'},
+  ];
+
+  // Bar chart
+  const maxN = Math.max(...columns.map(c=>tasks.filter(t=>t.colId===c.id).length), 1);
+  const bars = columns.map((col,i)=>{
+    const n = tasks.filter(t=>t.colId===col.id).length;
+    return { label:col.title, n, pct: total?Math.round(n/total*100):0, color:cs(i).ca, h:Math.round(n/maxN*100) };
+  });
+
+  // Filtered tasks
+  const q = search.toLowerCase();
+  const filtered = q ? tasks.filter(t=>t.title.toLowerCase().includes(q)||(t.desc||'').toLowerCase().includes(q)) : tasks;
+
+  // Task CRUD
+  const addTask = (colId) => setModal({ task: null, colId });
+  const editTask = (task) => setModal({ task, colId: task.colId });
+
+  const saveTask = ({ title, desc, priority, colId }) => {
+    if (modal.task) {
+      setTasks(prev => prev.map(t => t.id===modal.task.id ? {...t,title,desc,priority,colId} : t));
+    } else {
+      setTasks(prev => [...prev, { id:'t'+nTask, colId, title, desc, priority, at:Date.now() }]);
+      setNTask(n => n+1);
+    }
+    setModal(null);
+  };
+
+  const deleteTask = id => setTasks(prev => prev.filter(t=>t.id!==id));
+
+  const moveTaskTo = (taskId, targetColId) => {
+    if (!targetColId) { setMoveSheet(taskId); return; }
+    setTasks(prev => prev.map(t => t.id===taskId ? {...t,colId:targetColId} : t));
+    setMoveSheet(null);
+  };
+
+  // Column CRUD
+  const addColumn = () => {
+    setColumns(prev => [...prev, {id:'c'+nCol, title:'New Column'}]);
+    setNCol(n=>n+1);
+  };
+
+  const renameColumn = (id, val) => {
+    const title = val.trim();
+    if (title) setColumns(prev => prev.map(c=>c.id===id?{...c,title}:c));
+  };
+
+  const deleteColumn = (id) => {
+    if (columns.length <= 1) return;
+    if (tasks.some(t=>t.colId===id) && !window.confirm('Delete column and all its tasks?')) return;
+    setColumns(prev => prev.filter(c=>c.id!==id));
+    setTasks(prev => prev.filter(t=>t.colId!==id));
+  };
+
+  // Drag
+  const dragState = {
+    onDragStart: id => setDragId(id),
+    onDragEnd: () => { setDragId(null); setOverCol(null); },
+  };
+
+  const handleDrop = colId => {
+    if (dragId) setTasks(prev => prev.map(t=>t.id===dragId?{...t,colId}:t));
+    setDragId(null); setOverCol(null);
+  };
+
+  return (
+    <>
+      {/* Header */}
+      <header className="header">
+        <div className="logo">
+          <div className="logo-box">{Icon.grid}</div>
+          ZenBoard
+        </div>
+        <div className="search-bar">
+          {Icon.search}
+          <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search tasks…"/>
+        </div>
+        <div className="hdr-actions">
+          <button className="btn btn-theme btn-icon" onClick={()=>setDark(d=>!d)} title="Toggle theme">
+            {dark ? Icon.sun : Icon.moon}
+          </button>
+          <button className="btn btn-analytics" onClick={()=>setShowAnalytics(true)}>
+            {Icon.chart} <span className="hdr-lbl">Analytics</span>
+          </button>
+          <button className="btn btn-col" onClick={addColumn}>
+            {Icon.plus} <span className="hdr-lbl">Column</span>
+          </button>
+          <button className="btn btn-primary" onClick={()=>addTask(columns[0]?.id)}>
+            {Icon.plus} <span className="hdr-lbl">New Task</span>
+          </button>
+        </div>
+      </header>
+
+      {/* Summary */}
+      <div className="summary">
+        {stats.map((s,i) => (
+          <div key={i} className="stat-card" style={{animationDelay:`${i*0.06}s`}}>
+            <div className="stat-icon" style={{background:s.bg}}>{s.e}</div>
+            <div>
+              <div className="stat-num" style={{color:s.col}}>{s.n}</div>
+              <div className="stat-lbl">{s.l}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Progress — REMOVED from main view, now in Analytics modal */}
+
+      {/* Board — now takes full vertical space */}
+      <div className="board">
+        {columns.map((col, idx) => (
+          <Column
+            key={col.id}
+            col={col}
+            idx={idx}
+            tasks={filtered.filter(t=>t.colId===col.id)}
+            totalTasks={tasks.length}
+            onAddTask={addTask}
+            onEditTask={editTask}
+            onDeleteTask={deleteTask}
+            onMoveTask={moveTaskTo}
+            onRename={renameColumn}
+            onDelete={deleteColumn}
+            dragState={dragState}
+            onDragOver={setOverCol}
+            onDrop={handleDrop}
+            onDragLeave={id=>overCol===id&&setOverCol(null)}
+          />
+        ))}
+      </div>
+
+      {/* FAB (mobile) */}
+      <button className="fab" onClick={()=>addTask(columns[0]?.id)}>
+        {Icon.plus}
+      </button>
+
+      {/* Analytics Modal */}
+      {showAnalytics && (
+        <div className="analytics-overlay" onClick={e=>e.target.classList.contains('analytics-overlay')&&setShowAnalytics(false)}>
+          <div className="analytics-modal">
+            <div className="analytics-head">
+              <div>
+                <div className="modal-title">Analytics</div>
+                <div style={{fontSize:12,color:'var(--text2)',marginTop:2}}>{tasks.length} tasks · {columns.length} columns</div>
+              </div>
+              <button className="modal-close" onClick={()=>setShowAnalytics(false)}>×</button>
+            </div>
+            <div className="analytics-body">
+              {/* Stat pills */}
+              <div className="analytics-pills">
+                {stats.map((s,i)=>(
+                  <div key={i} className="analytics-pill">
+                    <div className="ap-num" style={{color:s.col}}>{s.n}</div>
+                    <div className="ap-lbl">{s.l}</div>
+                  </div>
+                ))}
+              </div>
+              {/* Donut Chart */}
+              <div style={{marginBottom:8}}>
+                <div className="prog-title" style={{marginBottom:20, textAlign:'center'}}>Task Distribution</div>
+                <DonutChart segments={bars.map(b=>({label:b.label, value:b.n, color:b.color}))} />
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Task Modal */}
+      {modal && (
+        <TaskModal
+          task={modal.task}
+          columns={columns}
+          defaultColId={modal.colId}
+          onSave={saveTask}
+          onClose={()=>setModal(null)}
+        />
+      )}
+
+      {/* Move Sheet */}
+      {moveSheet && (
+        <MoveSheet
+          task={tasks.find(t=>t.id===moveSheet)}
+          columns={columns}
+          colStyles={cs}
+          onMove={colId=>moveTaskTo(moveSheet,colId)}
+          onClose={()=>setMoveSheet(null)}
+        />
+      )}
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
